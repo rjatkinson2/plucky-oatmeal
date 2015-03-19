@@ -5,7 +5,7 @@ var auth = require('./auth.js');
 var util = require('./utility');
 var handler = require('./request-handler.js');
 var express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -57,7 +57,7 @@ passport.serializeUser(function(user, done){
 
 passport.deserializeUser(function(user, done){
   done(null, user);
-}
+});
 
 // In auth page to authenticate, might need to move it. 
 app.get('/auth', passport.authenticate('github'));

@@ -9,16 +9,16 @@
       angular.module('ribbitAudienceRTC')
         .controller('audienceCtrl', function (audienceRTC) {
           audienceRTC.signalServer.onopen = function () {  //shouldn't have to mess with this here
-            console.log('audience trying to connect')
+            console.log('audience trying to connect');
             audienceRTC.getMedia({ video: true, audio: true }, function (stream) {
               var videoEl = document.getElementById('local-video');
               videoEl.src = window.URL.createObjectURL(stream);          
               audienceRTC.connect({ roomname: 'aviary', presenter: 'fred' }, 'brian');
             });
-          }
+          };
         })
         .config(['baseRTCProvider', function(baseRTCProvider) {
-          console.log('hey! in the confige')
+          console.log('hey! in the config');
 
           baseRTCProvider.setSignalServer('ws://localhost:3434'); //normally must be set up by app
 

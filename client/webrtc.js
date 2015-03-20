@@ -9,7 +9,7 @@ var peerConnectionConfig = {
     {'url': 'stun:stun.services.mozilla.com'}, 
     {'url': 'stun:stun.l.google.com:19302'}
   ]
-}
+};
 
 // So we don't have to use prefixed methods later
 navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
@@ -21,12 +21,12 @@ window.RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSess
 // Run on load to initiate socket connection to our socket server
 // and get video/audio streams from client device using getUserMedia.
 function pageReady () {
-  console.log('1. pageReady called')
+  console.log('1. pageReady called');
   localVideo = document.getElementById('local-video');
   remoteVideo = document.getElementById('remote-video');
 
-  // serverConnection = new WebSocket('ws://11fc5137.ngrok.com')
-  serverConnection = new WebSocket('ws://localhost:3434')
+  serverConnection = new WebSocket('ws://60988d8f.ngrok.com');
+  // serverConnection = new WebSocket('ws://localhost:3434')
 
   // Set up event handler for handling socket messages.
   // These message contain either ice candidates and offers 
@@ -44,7 +44,7 @@ function pageReady () {
     //from our socket (that's a quirk of this implementation -- it's fragile)
     navigator.getUserMedia(constraints, getUserMediaSuccess, getUserMediaError);
   } else {
-    console.log('no getUserMedia API')
+    console.log('no getUserMedia API');
   }
 }
 
@@ -54,7 +54,7 @@ function pageReady () {
 // Note: this only gets called after user grants access to use mic 
 // and camera
 function getUserMediaSuccess (stream) {
-  console.log('get user media success! Woot!')
+  console.log('get user media success! Woot!');
   localStream = stream;
   localVideo.src = window.URL.createObjectURL(stream);  //cool! can just set src attr to a url-ified version of the stream
 }

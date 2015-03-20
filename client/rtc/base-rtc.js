@@ -21,7 +21,7 @@ var makeBaseRTC = function (options) {
     // We are just storing the callback function here for later access via the maybeReady helper function.
     onSetupComplete = fn;
     // Check if all setup tasks are complete utilizing the maybeReady helper function defined below.
-    maybeReady(); 
+    maybeReady();
   };
 
   // This function checks to see if all the tasks required for setup are complete.

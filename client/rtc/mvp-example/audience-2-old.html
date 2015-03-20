@@ -13,13 +13,13 @@
             audienceRTC.getMedia({ video: true, audio: true }, function (stream) {
               var videoEl = document.getElementById('local-video');
               videoEl.src = window.URL.createObjectURL(stream);          
-              audienceRTC.connect({ roomname: 'aviary', presenter: 'fred' }, 'sungmin');
+              audienceRTC.connect({ roomname: 'aviary', presenter: 'fred' }, 'andy');
             });
           };
         })
         .config(['baseRTCProvider', function(baseRTCProvider) {
           console.log('hey! in the config');
-          
+
           baseRTCProvider.setSignalServer('ws://localhost:3434');
           // normally must be set up by app
           // baseRTCProvider.setSignalServer('ws://60988d8f.ngrok.com');

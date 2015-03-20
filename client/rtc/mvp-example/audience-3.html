@@ -20,7 +20,9 @@
         .config(['baseRTCProvider', function(baseRTCProvider) {
           console.log('hey! in the config');
 
-          baseRTCProvider.setSignalServer('ws://localhost:3434'); //normally must be set up by app
+          baseRTCProvider.setSignalServer('ws://localhost:3434');
+          // normally must be set up by app
+          // baseRTCProvider.setSignalServer('ws://60988d8f.ngrok.com');
 
           baseRTCProvider.setPeerConnectionConfig({
             'iceServers': [

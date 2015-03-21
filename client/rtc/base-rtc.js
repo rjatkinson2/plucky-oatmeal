@@ -162,9 +162,11 @@ var makeBaseRTC = function (options) {
     }.bind(this), function (err) { console.log('offer erorr: ', err); });
   };
 
+  // Close peer connection to a specific user
   baseRTC.disconnectFromUser = function(remoteUser){
-    console.log(this.peerConnections);
+    // Lookup user in peerConnections object;
     var pc = this.peerConnections[remoteUser];
+    // Utilize built-in RTCPeerConnection close method https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/close
     pc.close();
   };
 

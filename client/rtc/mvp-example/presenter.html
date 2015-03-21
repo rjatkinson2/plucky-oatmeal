@@ -23,8 +23,31 @@
 
           // only connect once our RTC manager is ready!
           presenterRTC.ready(function () {
-            // the first arg here is teh room object, the second is who we're connecting as
+            // the first arg here is the room object, the second is who we're connecting as
             presenterRTC.connect({ name: 'aviary', presenter: 'fred'}, 'fred'); 
+          });
+
+          presenterRTC.on('onremovestream', function(event, remoteUser, pc){
+            console.log('we are in here, finally -------');
+            console.log(event);
+            console.log(remoteUser);
+            console.log(pc);
+            for(var i = $scope.connections.length-1; i >= 0; i--) {
+              if( $scope.connections[i].user === remoteUser) $scope.connections.splice(i,1);
+              return;
+            }
+          });
+
+          presenterRTC.on('oniceconnectionstatechange', function(event, remoteUser, pc){
+            console.log('!!!!!!!!!!!!ice connection changed');
+            console.log(event);
+            console.log(remoteUser);
+            console.log(pc);
+            for(var i = $scope.connections.length-1; i >= 0; i--) {
+              console.log($scope.connections[i]);
+              if( $scope.connections[i].user === remoteUser) $scope.connections.splice(i,1);
+              return;
+            }
           });
 
           // register event handlers for peer connection events. MDN has a description of these events.
@@ -35,16 +58,18 @@
             // NOTE: this doesn't yet seem to work when the stream is remote, though I'm pretty sure it should.
             // if you don't go through angular and instead just set the src w/vanillaJS it does work, so things
             // are fine on the RTC side...
+            console.log('onaddstream event fired! Woot!');
             var stream = $sce.trustAsResourceUrl(window.URL.createObjectURL(event.stream));
             var connection = {
               stream: stream,
               user: remoteUser
             };
             $scope.connections.push(connection);
-
+            console.log($scope.connections.length);
             // must call $scope.$apply so angular knows to run a digest
             $scope.$apply();
           });
+
 
         })
         .config(['baseRTCProvider', function(baseRTCProvider) {

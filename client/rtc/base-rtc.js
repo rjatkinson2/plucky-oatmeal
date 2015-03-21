@@ -97,14 +97,21 @@ var makeBaseRTC = function (options) {
     // This object manages local video/audio setting information and handles the network addresses peers will use to connect.
     var pc = new RTCPeerConnection(this.peerConnectionConfig);
 
-    // Add peerConnection event handlers, e.g. onaddstream.
+    // Add all existing peerConnection event handlers to new peerConnections.
+    // Handlers are registered via the baseRTC.on method defined below.
     // Make the remote user and peerConnection object available to the handler
-    for (var e in this.handlers) {
-      pc[e] = function () {
+    // The iterator e (stands for event) must be stored as a property on the function in order to give us closure access at the time the event handler needs triggered.
+    // Otherwise, the iterator would progess to the end and the handler lookup would always be the last handler in the object.
+    var that = this.handlers;
+    for (var e in that) {
+      pc[e] = function handler () {
+        console.log(this);
+        var func = that[handler.key];
         var args = Array.prototype.slice.call(arguments);
         args.push(remoteUser, pc);
-        this.handlers[e].apply(undefined, args);
-      }.bind(this);
+        func.apply(undefined, args);
+      };
+      pc[e].key = e;
     }
 
     // This handler is called when network candidates become available.
@@ -162,11 +169,13 @@ var makeBaseRTC = function (options) {
     }.bind(this), function (err) { console.log('offer erorr: ', err); });
   };
 
-  // Close peer connection to a specific user
+  // Close peer connection to a specific user.
+  // This method gets called by an audience member to turn off their mic and stop audio from streaming 
   baseRTC.disconnectFromUser = function(remoteUser){
     // Lookup user in peerConnections object;
     var pc = this.peerConnections[remoteUser];
     // Utilize built-in RTCPeerConnection close method https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/close
+    // pc.removeStream(this.localStream);
     pc.close();
   };
 
@@ -263,6 +272,9 @@ var makeBaseRTC = function (options) {
     }
     // Save so we can add to peer connections we create in the future
     handlers[event] = handler; //only one handler per event for now
+    console.log('thesebemyhandlers');
+    console.log(handlers.onaddstream);
+    console.log(handlers);
   };
 
   // Return completed baseRTC object from constructor function.

@@ -11,7 +11,7 @@
       var addVideoElem = function (stream) {
         console.log('adding video!');
         var vid = document.createElement('video');
-        vid.muted = true;
+        vid.muted = false;
         vid.autoplay = true;
         vid.src = window.URL.createObjectURL(stream); 
         document.getElementById('videos').appendChild(vid);
@@ -50,6 +50,7 @@
         .config(['baseRTCProvider', function(baseRTCProvider) {
           console.log('hey! in the confige');
 
+          // baseRTCProvider.setSignalServer('ws://307a1d89.ngrok.com');
           baseRTCProvider.setSignalServer('ws://localhost:3434');
           // normally must be set up by app
           // baseRTCProvider.setSignalServer('ws://60988d8f.ngrok.com');
@@ -67,11 +68,11 @@
   </head>
   <body ng-app="ribbitPresenterRTC" ng-controller="presenterCtrl">
     <h1>Audience Video</h1>
-    Connections count: {{connections.length}}
+    <p>Connections count: {{connections.length}}</p>
     <div ng-repeat="connection in connections">
 
       <video autoplay muted ng-src="{{connection.stream}}" style="width:40%;"></video>
-      {{connection.user}}
+      <p>{{connection.user}}</p>
     </div>
   </body>
 </html>

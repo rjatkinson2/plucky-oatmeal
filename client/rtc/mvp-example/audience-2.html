@@ -9,9 +9,21 @@
     <script type="text/javascript">
       angular.module('ribbitAudienceRTC')
         .controller('audienceCtrl', function ($scope, $sce, audienceRTC) {
+          // only connect after ready (signal server is up, we have a media stream)
           audienceRTC.ready(function () {
+
+            // access local media stream in audienceRTC.localStream
+            // to use as a src in the DOM, you must run it through a couple functions:
+            // - window.URL.createObjectURL to transform the stream object into a blob URL
+            // - $sce.trustAsResourceUrl to let angular know it can trust the blob URL
+            //   you need to inject $sce as a dependency (part of angular-sanitize, included in baseRTC)
             $scope.localStream = $sce.trustAsResourceUrl(window.URL.createObjectURL(audienceRTC.localStream));
+
+            // connect now that our signal server is ready
             audienceRTC.connect({ roomname: 'aviary', presenter: 'fred' }, 'joe');
+
+            // if you your handler updates the $scope, you need to call $scope.$apply
+            // so angular knows to run a digest.
             $scope.$apply();
           });
         })
@@ -19,6 +31,8 @@
           console.log('hey! in the config');
 
           baseRTCProvider.setSignalServer('ws://localhost:3434');
+          // normally must be set up by app
+          // baseRTCProvider.setSignalServer('ws://60988d8f.ngrok.com');
 
           baseRTCProvider.setPeerConnectionConfig({
             'iceServers': [

@@ -14,6 +14,10 @@ angular.module('ribbitAudienceRTC', ['ribbitBaseRTC', 'ngSanitize'])
       this.connectToUser(room.presenter);
     };
 
+    baseRTC.disconnect = function(room, user){
+      this.disconnectFromUser(room.presenter);
+    };
+
     return baseRTC;
   });
 
